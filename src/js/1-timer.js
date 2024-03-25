@@ -5,7 +5,11 @@ import "izitoast/dist/css/iziToast.min.css";
 
 const input = document.querySelector("#datetime-picker");
 const startBtn = document.querySelector("[data-start]");
-const timer = document.querySelectorAll(".timer.value");
+//const timer = document.querySelector("[data-days]", "[data-hours]", "[data-minutes]", "[data-seconds]");
+const days = document.querySelector("[data-days]");
+const hours = document.querySelector("[data-hours]")
+const minutes = document.querySelector("[data-minutes]");
+const seconds = document.querySelector("[data-seconds]");
 
 let usersData = null;
 let currentDate = null;
@@ -50,11 +54,11 @@ function refreshTimer() {
     timer.forEach(element => (element.textContent = '00'));
     return;
   }
-  const { days, hours, minutes, seconds } = convertMs(timeDelta);
-  timer[0].textContent = prependZero(days);
-  timer[1].textContent = prependZero(hours);
-  timer[2].textContent = prependZero(minutes);
-  timer[3].textContent = prependZero(seconds);
+  const timerDate= convertMs(timeDelta);
+  days.textContent = `${timerDate.days}`;
+  hours.textContent = `${timerDate.hours}`;
+  minutes.textContent = `${timerDate.minutes}`;
+  seconds.textContent = `${timerDate.seconds}`;
 }
 
 startBtn.addEventListener("click", e => {
