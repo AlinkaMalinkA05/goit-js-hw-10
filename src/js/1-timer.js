@@ -11,7 +11,7 @@ const minutes = document.querySelector("[data-minutes]");
 const seconds = document.querySelector("[data-seconds]");
 
 let usersData = null;
-let currentDate = null;
+let timer = null;
 const options = {
   enableTime: true,
   time_24hr: true,
@@ -46,12 +46,14 @@ function refreshTimer() {
   const now = new Date();
   const timeDelta = usersData - now;
   if (timeDelta <= 0) {
-    clearInterval(currentDate);
-    
-    timer.forEach(element => (element.textContent = '00'));
+    clearInterval(timer); 
+    days.textContent = '00';
+    hours.textContent = '00';
+    minutes.textContent = '00';
+    seconds.textContent = '00';
     return;
   }
-  const timerDate= convertMs(timeDelta);
+  const timerDate = convertMs(timeDelta);
   days.textContent = timerDate.days;
   hours.textContent = timerDate.hours;
   minutes.textContent = timerDate.minutes;
@@ -62,7 +64,7 @@ startBtn.addEventListener("click", e => {
   startBtn.disabled = true;
   input.disabled = true;
   refreshTimer();
-  currentDate = setInterval(refreshTimer, 1000)
+  timer = setInterval(refreshTimer, 1000); 
 });
 document.addEventListener("DOMContentLoaded", function () {
   startBtn.disabled = true;
