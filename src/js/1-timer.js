@@ -5,9 +5,8 @@ import "izitoast/dist/css/iziToast.min.css";
 
 const input = document.querySelector("#datetime-picker");
 const startBtn = document.querySelector("[data-start]");
-//const timer = document.querySelector("[data-days]", "[data-hours]", "[data-minutes]", "[data-seconds]");
 const days = document.querySelector("[data-days]");
-const hours = document.querySelector("[data-hours]")
+const hours = document.querySelector("[data-hours]");
 const minutes = document.querySelector("[data-minutes]");
 const seconds = document.querySelector("[data-seconds]");
 
@@ -20,7 +19,7 @@ const options = {
   minuteIncrement: 1,
   onClose(selectedDates) {
     usersData = selectedDates[0];
-    checkCorrectData()
+    checkCorrectData();
   },
 };
 flatpickr(input, options);
@@ -42,9 +41,7 @@ function checkCorrectData() {
     });
   }
 }
-function prependZero(value) {
-  return value < 10 ? '0' + value : value;
-}
+
 function refreshTimer() {
   const now = new Date();
   const timeDelta = usersData - now;
@@ -55,10 +52,10 @@ function refreshTimer() {
     return;
   }
   const timerDate= convertMs(timeDelta);
-  days.textContent = `${timerDate.days}`;
-  hours.textContent = `${timerDate.hours}`;
-  minutes.textContent = `${timerDate.minutes}`;
-  seconds.textContent = `${timerDate.seconds}`;
+  days.textContent = timerDate.days;
+  hours.textContent = timerDate.hours;
+  minutes.textContent = timerDate.minutes;
+  seconds.textContent = timerDate.seconds;
 }
 
 startBtn.addEventListener("click", e => {
@@ -70,6 +67,7 @@ startBtn.addEventListener("click", e => {
 document.addEventListener("DOMContentLoaded", function () {
   startBtn.disabled = true;
 });
+
 function convertMs(ms) {
   // Number of milliseconds per unit of time
   const second = 1000;
@@ -78,17 +76,17 @@ function convertMs(ms) {
   const day = hour * 24;
 
   // Remaining days
-  const days = Math.floor(ms / day);
+  const days = prependZero(Math.floor(ms / day));
   // Remaining hours
-  const hours = Math.floor((ms % day) / hour);
+  const hours = prependZero(Math.floor((ms % day) / hour));
   // Remaining minutes
-  const minutes = Math.floor(((ms % day) % hour) / minute);
+  const minutes = prependZero( Math.floor(((ms % day) % hour) / minute));
   // Remaining seconds
-  const seconds = Math.floor((((ms % day) % hour) % minute) / second);
+  const seconds = prependZero(Math.floor((((ms % day) % hour) % minute) / second));
 
   return { days, hours, minutes, seconds };
 }
 
-console.log(convertMs(2000)); // {days: 0, hours: 0, minutes: 0, seconds: 2}
-console.log(convertMs(140000)); // {days: 0, hours: 0, minutes: 2, seconds: 20}
-console.log(convertMs(24140000)); // {days: 0, hours: 6 minutes: 42, seconds: 20}
+function prependZero(value) {
+  return value.toString().padStart(2, "0");
+}
